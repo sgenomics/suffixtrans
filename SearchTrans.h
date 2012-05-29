@@ -160,7 +160,7 @@ public:
     return sub;
   }
 
-  suffixnodestore_type get_store() {
+  suffixnodestore_type &get_store() {
     return st.store;
   } 
 
