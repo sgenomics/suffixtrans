@@ -160,6 +160,10 @@ public:
     return sub;
   }
 
+  suffixnodestore_type get_store() {
+    return st.store;
+  } 
+
   uint8_t aggregation; 
   uint8_t symbol_count;
   uint16_t symbol_cache;
