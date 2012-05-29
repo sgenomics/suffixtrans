@@ -1,4 +1,7 @@
 #include "SuffixTree.h"
+#include <limits>
+
+using namespace std;
 
 class SearchTrans {
 
@@ -66,7 +69,7 @@ public:
     //cout << endl;
 
     //validate missing start positions
-    for(size_t n=0;n<offset;n++) {
+    for(int n=0;n<offset;n++) {
       //cout << "Scomparing: " << n << " " << s[n] << endl;
       //cout << "Ocomparing: " << original_text[original_position-offset+n] << endl;
       if(s[n] != original_text[original_position-offset+n]) return false;
@@ -86,7 +89,7 @@ public:
 
     for(size_t n=0;n<hits.size();n++) {
       bool valid = validate_hit(hits[n],s,offset);
-      if(!valid) hits[n]=-1;
+      if(!valid) hits[n]=numeric_limits<size_t>::max();
     }
   }
 
@@ -109,7 +112,7 @@ public:
       vector<size_t> hits = st.all_occurs(transcode(ss,offset),max_hits);
 
       validation_filter(hits,ss,offset);
-      for(size_t n=0;n<hits.size();n++) if(hits[n]!=-1) all_hits.push_back((hits[n]*(aggregation+1)-offset));
+      for(size_t n=0;n<hits.size();n++) if(hits[n]!=numeric_limits<size_t>::max()) all_hits.push_back((hits[n]*(aggregation+1)-offset));
     }
 
     return all_hits;
@@ -126,7 +129,6 @@ public:
     original_text.push_back(current_symbol);
 
     if(symbol_count == aggregation) {
-      uint16_t s = join(symbol_cache,transcode_char(current_symbol));
       st.insert(join(symbol_cache,transcode_char(current_symbol)));
       symbol_count = 0;
       symbol_cache = 0;
@@ -148,9 +150,19 @@ public:
     st.dump_stats();
   }
 
-  uint16_t symbol_cache;
-  uint8_t symbol_count;
+  size_t size() {
+    return original_text.size();
+  }
+
+  string get_substr(size_t start,size_t end) {
+    string sub;
+    for(size_t n=start;n<=end;n++) sub += original_text[n];
+    return sub;
+  }
+
   uint8_t aggregation; 
+  uint8_t symbol_count;
+  uint16_t symbol_cache;
   uint8_t transcoded_bits;
 
   vector<uint8_t> original_text;
