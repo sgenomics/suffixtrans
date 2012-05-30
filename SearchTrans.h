@@ -57,17 +57,17 @@ public:
 
     size_t original_position = hit*(aggregation+1);
 
-    cout << "Original Text: ";
-    for(int n=0;n<20;n++) {
-      cout << original_text[original_position-offset+n];
-    }
-    cout << endl;
+    //cout << "Original Text: ";
+    //for(int n=0;n<20;n++) {
+    //  cout << original_text[original_position-offset+n];
+    //}
+    //cout << endl;
 
-    cout << "Search string: ";
-    for(size_t n=0;n<s.size();n++) {
-      cout << s[n]; 
-    }
-    cout << endl;
+    //cout << "Search string: ";
+    //for(size_t n=0;n<s.size();n++) {
+    //  cout << s[n]; 
+    //}
+    //cout << endl;
 
     //validate missing start positions
     for(int n=0;n<offset;n++) {
@@ -76,14 +76,8 @@ public:
 
     //validate missing end positions
     size_t extra=(s.size()%(aggregation+1))+offset;
-    cout << "extra: " << extra << endl;
-    cout << "s.size(): " << s.size() << endl;   
-    cout << "offset: " << offset << endl;
-
 
     for(size_t n=s.size()-extra;n<s.size();n++) {
-      cout << "s: " << s[n] << endl;
-      cout << "o: " << original_text[original_position+n-offset] << endl;
       if(s[n] != original_text[original_position+n-offset]) return false;
     }
 
