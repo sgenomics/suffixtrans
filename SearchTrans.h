@@ -75,9 +75,16 @@ public:
     }
 
     //validate missing end positions
-    size_t extra=(s.size()%(aggregation+1))-offset;
+    size_t extra=(s.size()%(aggregation+1))+offset;
+    cout << "extra: " << extra << endl;
+    cout << "s.size(): " << s.size() << endl;   
+    cout << "offset: " << offset << endl;
+
+
     for(size_t n=s.size()-extra;n<s.size();n++) {
-      if(s[n] != original_text[original_position+n]) return false;
+      cout << "s: " << s[n] << endl;
+      cout << "o: " << original_text[original_position+n-offset] << endl;
+      if(s[n] != original_text[original_position+n-offset]) return false;
     }
 
     return true;
