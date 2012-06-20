@@ -1,6 +1,10 @@
+#ifndef SEARCHTRANS
+#define SEARCHTRANS
+
 #include "SuffixTree.h"
 #include <limits>
 #include "stringify.h"
+#include "ProcessPositions.h"
 
 using namespace std;
 
@@ -93,11 +97,11 @@ public:
     }
   }
 
-  void process_positions() {
-    st.process_positions();
-  }
+ // void process_positions() {
+ //   st.process_positions();
+ // }
 
-  vector<size_t> all_occurs(vector<uint8_t> ss,size_t max_hits=-1) {
+  vector<size_t> all_occurs(vector<uint8_t> ss,ProcessPositions<suffixnodestore_type,suffixnode_t> &p,size_t max_hits=-1) {
 
     if(ss.size() < (aggregation+1)) return vector<size_t>(); // we can't search for things this short.
 
@@ -109,7 +113,7 @@ public:
       //  uint16_t s = trans[n];
       //}
 
-      vector<size_t> hits = st.all_occurs(transcode(ss,offset),max_hits);
+      vector<size_t> hits = st.all_occurs(transcode(ss,offset),p,max_hits);
       validation_filter(hits,ss,offset);
       for(size_t n=0;n<hits.size();n++) if(hits[n]!=numeric_limits<size_t>::max()) all_hits.push_back((hits[n]*(aggregation+1)-offset));
     }
@@ -229,3 +233,5 @@ public:
   searchtrans_store_type original_text;
   SuffixTree st;
 };
+
+#endif
